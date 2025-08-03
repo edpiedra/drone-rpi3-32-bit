@@ -1,33 +1,26 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
 HOME="/home/pi"
-
-# configuration
 INSTALL_DIR="$HOME/drone-rpi3-32-bit/install"
+LOG_DIR="$INSTALL_DIR/logs"
 OPENNISDK_INSTALL="$INSTALL_DIR/setup_opennisdk.sh"
 PROJECT_INSTALL="$INSTALL_DIR/setup_project.sh"
-
-# create logger
-LOG_DIR="$INSTALL_DIR/logs"
-
-if [ ! -d "$LOG_DIR" ]; then 
-  mkdir -p $LOG_DIR 
-fi
-
 BUILD_LOG="$LOG_DIR/install.log"
+
+mkdir -p "$LOG_DIR"
 exec > >(tee "$BUILD_LOG") 2>&1
 
-# Step 1: install OpenNISDK
-echo "[1/2] Install: installing opennisdk..."
-sudo chmod +x "$OPENNISDK_INSTALL"
+log() { echo -e "\n[INFO] $1\n"; }
+
+log "[1/2] Installing OpenNI SDK..."
+chmod +x "$OPENNISDK_INSTALL"
 sudo "$OPENNISDK_INSTALL"
 
-# Step 2: install project
-echo "[2/2] installing project..."
-sudo chmod +x "$PROJECT_INSTALL"
+log "[2/2] Installing project dependencies..."
+chmod +x "$PROJECT_INSTALL"
 sudo "$PROJECT_INSTALL"
 
-echo "✅ Setup complete.  Logs saved to: $BUILD_LOG"
+log "✅ Setup complete. Logs saved to: $BUILD_LOG"
 exit 0

@@ -1,33 +1,29 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
 HOME="/home/pi"
 DRONE_DIR="$HOME/drone-rpi3-32-bit"
-INSTALL_DIR="$DRONE_DIR/install"
-LOG_DIR="$INSTALL_DIR/logs"
+LOG_DIR="$DRONE_DIR/install/logs"
+BUILD_LOG="$LOG_DIR/setup_project.log"
 
-if [ ! -d "$LOG_DIR" ]; then 
-  mkdir -p $LOG_DIR 
-fi
-
-BUILD_LOG="$LOG_DIR/setup_opennisdk.log"
+mkdir -p "$LOG_DIR"
 exec > >(tee "$BUILD_LOG") 2>&1
 
-# Step 1: update system packages
-echo "[1/3] Project: update system packages..."
-sudo apt update && sudo apt dist-upgrade
+log() { echo -e "\n[INFO] $1\n"; }
 
-# Step 2: install system packages
-echo "[2/3] Project: installing system packages..."
-sudo apt -y install python3-opencv python3-venv
+log "[1/3] Updating system packages..."
+sudo apt update && sudo apt -y dist-upgrade
 
-# Step 3: creating virtual environment and install packages
-echo "[3/3] Project: creating virtual environment and installing packages..."
+log "[2/3] Installing required packages..."
+sudo apt install -y python3-opencv python3-venv
+
+log "[3/3] Setting up Python virtual environment..."
 cd "$DRONE_DIR"
 python3 -m venv .venv
 source .venv/bin/activate
-python3 -m pip install -r requirements.txt
+pip install --upgrade pip
+pip install -r requirements.txt
 
-echo "✅ project setup successfully"
+log "✅ Project setup complete. Logs saved to: $BUILD_LOG"
 exit 0
