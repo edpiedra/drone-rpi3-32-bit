@@ -38,7 +38,10 @@ python3 setup.py bdist_wheel
 
 log "[4/4] Setting up Python virtual environment for drone project..."
 cd "$DRONE_DIR"
-python3 -m venv .venv
+
+if [ ! -d .venv ]; then 
+    python3 -m venv .venv
+fi
 source .venv/bin/activate
 python3 -m pip install -r requirements.txt
 
