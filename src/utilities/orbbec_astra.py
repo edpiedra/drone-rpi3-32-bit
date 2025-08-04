@@ -42,7 +42,7 @@ class AstraPi3:
         
         openni2.unload()
         
-    def get_depth_frame(self) -> cv2.Mat:
+    def get_depth_frame(self):
         '''
         Returns a 2D depth frame.
         '''
@@ -55,7 +55,7 @@ class AstraPi3:
         
         return img
     
-    def get_color_frame(self) -> cv2.Mat:
+    def get_color_frame(self):
         '''
         Returns and RGB frame.
         '''

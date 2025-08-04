@@ -8,7 +8,7 @@ class BodyDetector:
         '''
         self.body_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_fullbody.xml')
         
-    def detect_bodies(self, frame: cv2.Mat) -> Sequence[tuple[int]]:
+    def detect_bodies(self, frame):
         '''
         Scans a frame for bodies.
         
@@ -22,7 +22,7 @@ class BodyDetector:
         
         return bodies
     
-    def get_body_centers(self, bodies: Sequence[tuple[int]]) -> list[tuple[int]]:
+    def get_body_centers(self, bodies):
         '''
         Returns a list of centers for each body
         

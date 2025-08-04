@@ -30,22 +30,22 @@ fi
 
 sudo git clone "$NAVIO2_GIT"
 cd "$NAVIO2_PYTHON_DIR"
-python3 -m venv env
-source env/bin/activate
 sudo apt install -y python3-smbus python3-spidev
+python3 -m venv env --system-site-packages
+source env/bin/activate
 python3 -m pip install wheel
 python3 setup.py bdist_wheel
 
 log "[4/4] Setting up Python virtual environment for drone project..."
 cd "$DRONE_DIR"
+sudo apt install -y python3-numpy
 
 if [ ! -d .venv ]; then 
-    python3 -m venv .venv
+    sudo python3 -m venv .venv --system-site-packages
 fi
 source .venv/bin/activate
-sudo apt install -y python3-numpy
 sudo python3 -m pip install "$NAVIO2_PYTHON_DIR/dist/navio2-1.0.0-py3-none-any.whl"
-python3 -m pip install -r requirements.txt
+sudo python3 -m pip install -r requirements.txt
 
 log "✅ Project setup complete. Logs saved to: $BUILD_LOG"
 exit 0
