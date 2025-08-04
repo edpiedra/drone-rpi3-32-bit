@@ -21,9 +21,9 @@ log() {
     local message="$1"
     local timestamp=$(date +"%Y-%m-%d %H:%M:%S")
     local calling_function=${FUNCNAME[1]:-"main"}
-    local line_number=${BASH_LINE0[0]}
+#    local line_number=${BASH_LINE0[0]}
 
-    local formatted_message="[${timestamp}] [${SCRIPT_NAME}:${calling_function}:${line_number}] ${message}"
+    local formatted_message="[${timestamp}] [${SCRIPT_NAME}:${calling_function}:] ${message}"
     echo -e "\n${formatted_message}\n"
  }
 
