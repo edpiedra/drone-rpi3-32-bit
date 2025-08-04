@@ -33,6 +33,7 @@ cd "$NAVIO2_PYTHON_DIR"
 python3 -m venv env
 source env/bin/activate
 sudo apt install python3-smbus python3-spidev
+python3 -m pip install wheel
 python3 setup.py bdist_wheel
 
 log "[4/4] Setting up Python virtual environment for drone project..."
