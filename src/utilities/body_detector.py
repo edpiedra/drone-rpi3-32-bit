@@ -1,5 +1,4 @@
 import cv2 
-from typing import Sequence 
 
 class BodyDetector:
     def __init__(self):

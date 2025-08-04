@@ -12,23 +12,24 @@ LIB_DIR="/lib/arm-linux-gnueabihf"
 SIMPLE_READ_EX="Samples/SimpleRead"
 LOG_DIR="$PROJECT_DIR/install/logs"
 BUILD_LOG="$LOG_DIR/setup_opennisdk.log"
+OPENNI2_REDIST_DIR="$OPENNISDK_ARM_DIR/Redist"
 
 mkdir -p "$LOG_DIR"
 exec > >(tee "$BUILD_LOG") 2>&1
 
 log() { echo -e "\n[INFO] $1\n"; }
 
-log "[1/9] Updating system packages..."
+log "[ 1/10] Updating system packages..."
 sudo apt update && sudo apt -y dist-upgrade
 
-log "[2/9] Copying OpenNI SDK files..."
+log "[ 2/10] Copying OpenNI SDK files..."
 mkdir -p "$OPENNISDK_DIR"
 cp -r "$OPENNISDK_SOURCE" "$OPENNISDK_DIR"
 
-log "[3/9] Installing dependencies..."
+log "[ 3/10] Installing dependencies..."
 sudo apt-get install -y build-essential freeglut3 freeglut3-dev python3-opencv
 
-log "[4/9] Ensuring libudev is correctly installed..."
+log "[ 4/10] Ensuring libudev is correctly installed..."
 if ! ldconfig -p | grep -q libudev.so.1; then
     log "libudev.so.1 not found. Installing..."
     sudo apt install --reinstall -y libudev1
@@ -37,17 +38,17 @@ else
     sudo apt install --reinstall -y libudev1
 fi
 
-log "[5/9] Installing OpenNI SDK..."
+log "[ 5/10] Installing OpenNI SDK..."
 cd "$OPENNISDK_ARM_DIR"
 chmod +x install.sh
 sudo ./install.sh
 
-log "[6/9] Sourcing OpenNI Development Environment..."
+log "[ 6/10] Sourcing OpenNI Development Environment..."
 source OpenNIDevEnvironment
 
 read -p "→ OpenNI SDK installed. Replug your device, then press ENTER." _
 
-log "[7/9] Verifying Orbbec device detection..."
+log "[ 7/10] Verifying Orbbec device detection..."
 if lsusb | grep -q 2bc5:0407; then
     echo "Orbbec Astra Mini S detected."
 elif lsusb | grep -q 2bc5; then
@@ -58,12 +59,19 @@ else
     exit 1
 fi
 
-log "[8/9] Building sample code..."
+log "[ 8/10] Building sample code..."
 cd "$SIMPLE_READ_EX"
 make
 
-log "[9/9] Verifying build..."
+log "[ 9/10] Verifying build..."
 file "$OPENNISDK_DIR/$SIMPLE_READ_EX/Bin/Arm-Release/SimpleRead"
+
+log "[10/10] Adding PATH variables..."
+if ! grep -q "export PATH=.*$OPENNI2_REDIST_DIR" ~/.bashrc; then 
+    echo "export PATH=\"\$PATH:$OPENNI2_REDIST_DIR\"" >> ~/.bashrc 
+    echo "Added $OPENNI2_REDIST_DIR to PATH in ~/.bashrc..."
+    source ~/.bashrc
+fi 
 
 log "✅ OpenNI SDK setup complete. Logs saved to: $BUILD_LOG"
 exit 0
