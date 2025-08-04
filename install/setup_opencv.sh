@@ -43,15 +43,15 @@ sudo apt-get install -y build-essential cmake git pkg-config libgtk-3-dev \
     libxvidcore-dev libx264-dev libjpeg-dev libpng-dev libtiff-dev \
     gfortran openexr libatlas-base-dev libtbb2 libtbb-dev libdc1394-22-dev \
     libopenexr-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
-    python3.7-dev python3.7-venv python3-pip
+    python3.7-dev python3.7-venv python3-pip python3-numpy
 
 log "[ 4/ ] creating virtual environment..."
 $PYTHON_EXEC -m venv "$VENV_PATH"
 source "$VENV_PATH/bin/activate"
 
-log "[ 5/ ] installing python packages..."
-pip install --upgrade pip
-pip install numpy
+#log "[ 5/ ] installing python packages..."
+#pip install --upgrade pip
+#pip install numpy
 
 log "[ 6/ ] downloading opencv source..."
 cd "$OPENCV_BUILD"
