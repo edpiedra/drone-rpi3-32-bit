@@ -1,2 +1,3 @@
 openni
 numpy
+navio2 @ file://home/pi/navio2/python/dist/navio2-1.0.0-py3-none-any.whl

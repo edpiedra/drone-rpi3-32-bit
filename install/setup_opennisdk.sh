@@ -28,18 +28,13 @@ cp -r "$OPENNISDK_SOURCE" "$OPENNISDK_DIR"
 log "[3/9] Installing dependencies..."
 sudo apt-get install -y build-essential freeglut3 freeglut3-dev python3-opencv
 
-log "[4/9] Checking libudev.so.1..."
+log "[4/9] Ensuring libudev is correctly installed..."
 if ! ldconfig -p | grep -q libudev.so.1; then
-    cd "$LIB_DIR"
-    LIBUDEV_REAL=$(ls libudev.so.*.*.* 2>/dev/null | head -n 1)
-    if [[ -z "$LIBUDEV_REAL" ]]; then
-        echo "[ERROR] No suitable libudev version found."
-        exit 1
-    fi
-    sudo ln -sf "$LIBUDEV_REAL" libudev.so.1
-    echo "Symlink created: libudev.so.1 -> $LIBUDEV_REAL"
+    log "libudev.so.1 not found. Installing..."
+    sudo apt install --reinstall -y libudev1
 else
-    echo "libudev.so.1 already exists."
+    log "libudev.so.1 found. Reinstalling to ensure correct version..."
+    sudo apt install --reinstall -y libudev1
 fi
 
 log "[5/9] Installing OpenNI SDK..."
@@ -47,9 +42,12 @@ cd "$OPENNISDK_ARM_DIR"
 chmod +x install.sh
 sudo ./install.sh
 
+log "[6/9] Sourcing OpenNI Development Environment..."
+source OpenNIDevEnvironment
+
 read -p "→ OpenNI SDK installed. Replug your device, then press ENTER." _
 
-log "[6/9] Verifying Orbbec device detection..."
+log "[7/9] Verifying Orbbec device detection..."
 if lsusb | grep -q 2bc5:0407; then
     echo "Orbbec Astra Mini S detected."
 elif lsusb | grep -q 2bc5; then
@@ -59,9 +57,6 @@ else
     echo "[ERROR] No Orbbec device found."
     exit 1
 fi
-
-log "[7/9] Sourcing OpenNI Development Environment..."
-source OpenNIDevEnvironment
 
 log "[8/9] Building sample code..."
 cd "$SIMPLE_READ_EX"
