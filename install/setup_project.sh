@@ -43,9 +43,8 @@ if [ ! -d .venv ]; then
     python3 -m venv .venv
 fi
 source .venv/bin/activate
+sudo python3 -m pip install "$NAVIO2_PYTHON_DIR/dist/navio2-1.0.0-py3-none-any.whl"
 python3 -m pip install -r requirements.txt
-
-
 
 log "✅ Project setup complete. Logs saved to: $BUILD_LOG"
 exit 0
