@@ -7,7 +7,8 @@ DRONE_DIR="$HOME/drone-rpi3-32-bit"
 LOG_DIR="$DRONE_DIR/install/logs"
 BUILD_LOG="$LOG_DIR/setup_project.log"
 NAVIO2_GIT="https://github.com/emlid/Navio2.git"
-NAVIO2_PYTHON_DIR="$HOME/Navio2/Python"
+NAVIO2_DIR="$HOME/Navio2"
+NAVIO2_PYTHON_DIR="$NAVIO2_DIR/Python"
 
 mkdir -p "$LOG_DIR"
 exec > >(tee "$BUILD_LOG") 2>&1
@@ -22,6 +23,11 @@ sudo apt install -y python3-opencv python3-venv
 
 log "[3/4] Cloning from $NAVIO2_GIT ..."
 cd "$HOME"
+
+if [ -d "$NAVIO2_DIR" ]; then 
+    rm -r "$NAVIO2_DIR"
+fi 
+
 sudo git clone "$NAVIO2_GIT"
 cd "$NAVIO2_PYTHON_DIR"
 python3 -m venv env
