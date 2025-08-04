@@ -67,9 +67,9 @@ log "[ 9/10] Verifying build..."
 file "$OPENNISDK_DIR/$SIMPLE_READ_EX/Bin/Arm-Release/SimpleRead"
 
 log "[10/10] Adding PATH variables..."
-if ! grep -q "export PATH=.*$OPENNI2_REDIST_DIR" ~/.bashrc; then 
-    echo "export PATH=\"\$PATH:$OPENNI2_REDIST_DIR\"" >> ~/.bashrc 
-    echo "Added $OPENNI2_REDIST_DIR to PATH in ~/.bashrc..."
+if ! grep -q "export OPENNI2_REDIST=.*$OPENNI2_REDIST_DIR" ~/.bashrc; then 
+    echo "OPENNI2_REDIST=/home/pi/OpenNISDK/OpenNI-Linux-Arm-2.3.0.63/Redist" >> ~/.bashrc
+    echo "Added $OPENNI2_REDIST_DIR to OPENNI2_REDIST in ~/.bashrc..."
     source ~/.bashrc
 fi 
 
