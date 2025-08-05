@@ -1,11 +1,16 @@
 import cv2 
+import os 
+
+# full list of cascade types can be found in data/haarcascades
+CASCADE_TYPE = 'fullbody'
 
 class BodyDetector:
     def __init__(self):
         '''
         Creates a BodyDetection object that uses haarcascade filters.
         '''
-        self.body_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_fullbody.xml')
+        cascade_filename = f'./data/haarcascades/haarcascade_{CASCADE_TYPE}.xml'
+        self.body_cascade = cv2.CascadeClassifier(cascade_filename)
         
     def detect_bodies(self, frame):
         '''

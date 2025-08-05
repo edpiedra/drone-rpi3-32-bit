@@ -3,6 +3,7 @@ DRONE ENVIRONMENT
 Install Emlid image
 -------------------------------------------------------------------
 > emlid-raspian-20220608.img.xz using Raspberry Pi Imager
+    > update network ssid and psk for local wifi in wpa_supplicant.conf
 
 > boot and follow ArduPilot setup instructions
 ```
