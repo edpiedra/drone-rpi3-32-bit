@@ -50,13 +50,7 @@ log "[ 1/11] updating system packages..."
 sudo apt-get update && sudo apt-get -y -q dist-upgrade
 
 log "[ 2/11] installing system packages..."
-sudo apt-get install -y -q build-essential freeglut3 freeglut3-dev python3-opencv \
-    python3-numpy cmake git pkg-config libgtk-3-dev \
-    libavcodec-dev libavformat-dev libswscale-dev libv4l-dev \
-    libxvidcore-dev libx264-dev libjpeg-dev libpng-dev libtiff-dev \
-    gfortran openexr libatlas-base-dev libtbb2 libtbb-dev libdc1394-22-dev \
-    libopenexr-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
-    python3.7-dev python3.7-venv python3-pip 
+sudo apt-get install -y -q build-essential freeglut3 freeglut3-dev python3-opencv python3-venv python3-smbus python3-spidev python3-numpy python3-pip
 
 sudo apt-get install --reinstall -y -q libudev1
 
