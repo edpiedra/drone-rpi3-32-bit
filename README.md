@@ -22,7 +22,7 @@ Install OpenNISDK, virtual environment, and packages
 -------------------------------------------------------------------
 > clone repository and install project
 ```
-sudo apt update 
+sudo apt update && sudo apt -y dist-upgrade
 sudo apt install -y git
 cd ~
 sudo git clone https://github.com/edpiedra/drone-rpi3-32-bit.git
@@ -36,7 +36,7 @@ sudo ./drone-rpi3-32-bit/install/install.sh
 ```
 cd ~/drone-rpi3-32-bit
 source .venv/bin/activate
-python -m test-body-detection
+python3 -m test-body-detection
 ```
 
 > ===== to update local repository =====
