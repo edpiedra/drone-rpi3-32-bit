@@ -123,7 +123,7 @@ if ! grep -q "export OPENNI2_REDIST=.*$OPENNI2_REDIST_DIR" ~/.bashrc; then
 fi 
 
 log "[11/12] moving dlls..."
-sudo cp "$OPENNI2_REDIST_DIR/*" "/lib"
+sudo cp "$OPENNI2_REDIST_DIR/"* "/lib/"
 
 log "[11/12] verifying builds..."
 file "$SIMPLE_READ_EXAMPLE/Bin/Arm-Release/SimpleRead"
