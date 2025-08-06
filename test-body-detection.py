@@ -1,6 +1,8 @@
 from src.utilities.orbbec_astra import AstraPi3
 from src.utilities.body_detector import BodyDetector
 
+import time 
+
 camera = AstraPi3()
 detector = BodyDetector()
 
@@ -13,6 +15,8 @@ while True:
         centers = detector.get_body_centers(bodies)
         
         print(centers)
+        time.sleep(0.01)
+        
     except KeyboardInterrupt:
         break
 
