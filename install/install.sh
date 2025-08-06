@@ -46,15 +46,15 @@ log() {
     echo -e "\n${formatted_message}\n"
  }
 
-log "[ 1/11] updating system packages..."
+log "[ 1/12] updating system packages..."
 sudo apt-get update && sudo apt-get -y -q dist-upgrade
 
-log "[ 2/11] installing system packages..."
+log "[ 2/12] installing system packages..."
 sudo apt-get install -y -q build-essential freeglut3 freeglut3-dev python3-opencv python3-venv python3-smbus python3-spidev python3-numpy python3-pip
 
 sudo apt-get install --reinstall -y -q libudev1
 
-log "[ 3/11] copying OpenNI SDK distribution..."
+log "[ 3/12] copying OpenNI SDK distribution..."
 if [ -d "$OPENNISDK_DIR" ]; then 
     rm -r "$OPENNISDK_DIR"
 fi 
@@ -62,17 +62,17 @@ fi
 mkdir "$OPENNISDK_DIR"
 sudo cp -r "$OPENNISDK_SOURCE" "$OPENNISDK_DIR"
 
-log "[ 4/11] installing OpenNI SDK..."
+log "[ 4/12] installing OpenNI SDK..."
 cd "$OPENNISDK_DEST"
 chmod +x install.sh
 sudo ./install.sh
 
-log "[ 5/11] sourcing OpenNI development environment..."
+log "[ 5/12] sourcing OpenNI development environment..."
 source OpenNIDevEnvironment
 
 read -p "→ OpenNI SDK installed. Replug your device, then press ENTER." _
 
-log "[ 6/11] verifying Orbbec device..."
+log "[ 6/12] verifying Orbbec device..."
 if lsusb | grep -q 2bc5:0407; then
     echo "Orbbec Astra Mini S detected."
 elif lsusb | grep -q 2bc5; then
@@ -83,12 +83,12 @@ else
     exit 1
 fi
 
-log "[ 7/11] building $SIMPLE_READ_EXAMPLE..."
+log "[ 7/12] building $SIMPLE_READ_EXAMPLE..."
 cd "$SIMPLE_READ_EXAMPLE"
 make 
 
 if [ ! -f "$NAVIO2_WHEEL" ]; then 
-    log "[ 8/11] cloning from $NAVIO2_GIT..."
+    log "[ 8/12] cloning from $NAVIO2_GIT..."
 
     if [ -d "$NAVIO2_DIR" ]; then 
         rm -r "$NAVIO2_DIR"
@@ -97,16 +97,15 @@ if [ ! -f "$NAVIO2_WHEEL" ]; then
     cd "$HOME"
     sudo git clone "$NAVIO2_GIT"
     cd "$NAVIO2_PYTHON_DIR"
-    sudo apt install -y python3-smbus python3-spidev
     python3 -m venv env --system-site-packages
     source env/bin/activate
     python3 -m pip install wheel
     python3 setup.py bdist_wheel
 else 
-    log "[ 8/11] skipping cloning $NAVIO2_GIT because $NAVIO2_WHEEL aleady exists..."
+    log "[ 8/12] skipping cloning $NAVIO2_GIT because $NAVIO2_WHEEL aleady exists..."
 fi
 
-log "[ 9/11] checking for drone project virtual environment..."
+log "[ 9/12] checking for drone project virtual environment..."
 cd "$DRONE_DIR"
 
 if [ ! -d .venv ]; then 
@@ -116,14 +115,17 @@ if [ ! -d .venv ]; then
     sudo python3 -m pip install -r requirements.txt
 fi
 
-log "[10/11] adding environmental variables..."
+log "[10/12] adding environmental variables..."
 if ! grep -q "export OPENNI2_REDIST=.*$OPENNI2_REDIST_DIR" ~/.bashrc; then 
     echo "OPENNI2_REDIST=$OPENNI2_REDIST_DIR" >> ~/.bashrc
     echo "-> added $OPENNI2_REDIST_DIR to OPENNI2_REDIST environmental variable in ~/.bashrc"
     source ~/.bashrc 
 fi 
 
-log "[11/11] verifying builds..."
+log "[11/12] moving dlls..."
+sudo cp "$OPENNI2_REDIST_DIR/libOpenNI2.so" "/lib"
+
+log "[11/12] verifying builds..."
 file "$SIMPLE_READ_EXAMPLE/Bin/Arm-Release/SimpleRead"
 file "$NAVIO2_WHEEL"
 
