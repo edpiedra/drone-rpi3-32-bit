@@ -94,6 +94,7 @@ if [ ! -f "$NAVIO2_WHEEL" ]; then
         rm -r "$NAVIO2_DIR"
     fi 
 
+    cd "$HOME"
     sudo git clone "$NAVIO2_GIT"
     cd "$NAVIO2_PYTHON_DIR"
     sudo apt install -y python3-smbus python3-spidev
