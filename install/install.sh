@@ -60,7 +60,7 @@ if [ -d "$OPENNISDK_DIR" ]; then
 fi 
 
 mkdir "$OPENNISDK_DIR"
-sudo cp "$OPENNISDK_SOURCE" "$OPENNISDK_DIR"
+sudo cp -r "$OPENNISDK_SOURCE" "$OPENNISDK_DIR"
 
 log "[ 4/11] installing OpenNI SDK..."
 cd "$OPENNISDK_DEST"
